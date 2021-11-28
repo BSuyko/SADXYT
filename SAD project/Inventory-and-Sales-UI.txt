@@ -1,0 +1,61 @@
+---------------------------------------------INVENTORY-----------------------
+Product tab
+	(buttons
+
+	add product
+	edit with add category button
+	remove products but not totally wipe out
+	availability buttons (available, critical/unavailable)
+
+	dropdown
+	search by gatery
+
+
+	search bar
+	search products
+
+
+	list of products naka table.
+	name
+	category
+	quantity
+	price
+	availability/status)
+
+supplier tab
+	(buttons
+	add supplier
+	edit supplier
+	remove supplier
+	retrieve supplier (nakahide. once mag click ug supplier sa list na 
+	gitanggal sia ang button is mo visible to retrieve)
+	availability of supplier (current/old supplied)
+
+	
+	list of supplier
+	
+	Contact Name:
+	Business Name:
+	Address:
+	Contact Number:)
+
+------------------------------------------Sales-------------------------
+
+Product tab
+	(
+	
+	add button
+	edit button
+	void button (need authorized code para mag cancelled order)
+	generate invoice/purchase
+
+
+	list of products
+	
+	edittext box
+	quantity
+	)
+Invoice History
+	(
+	List of transaction histories
+	)
