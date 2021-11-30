@@ -47,13 +47,26 @@ if(isset($_POST['btn_editsupply'])){
 
     if($status=='inactive'){
         $query = "UPDATE `supplier` SET supplier_company='$supplier_company',supplier_detail='$supplier_details',supplier_address='$supplier_address',supplier_fax='$supplier_fax',
-    contact_person='$contact_person',contact_email='$contact_email',contact_number='$contact_number',Status='active'";
-    mysqli_query($db, $query);
+    contact_person='$contact_person',contact_email='$contact_email',contact_number='$contact_number',Status='active' WHERE Supplier_ID = '$supplier_id'";
+    $success_insert = mysqli_query($db, $query);
+    if ($success_insert) {
+        echo '<script> alert("Data Updated")</script>';
+        header('location: index.php');
+      } else {
+        echo '<script> alert("Data Not Updated")</script>';
+      }
+
     header('location:supplier.php');
     } else {
         $query = "UPDATE `supplier` SET supplier_company='$supplier_company',supplier_detail='$supplier_details',supplier_address='$supplier_address',supplier_fax='$supplier_fax',
-    contact_person='$contact_person',contact_email='$contact_email',contact_number='$contact_number'";
-    mysqli_query($db, $query);
+    contact_person='$contact_person',contact_email='$contact_email',contact_number='$contact_number' WHERE Supplier_ID = '$supplier_id'";
+    $success_insert = mysqli_query($db, $query);
+    if ($success_insert) {
+        echo '<script> alert("Data Updated")</script>';
+        header('location: index.php');
+      } else {
+        echo '<script> alert("Data Not Updated")</script>';
+      }
     header('location:supplier.php');
     }
 
@@ -64,7 +77,7 @@ if(isset($_POST['btn_editsupply'])){
 if(isset($_POST['btn_remove'])){
     $supplier_id = $_POST['Supplier_ID'];
 
-    $query = "UPDATE `supplier` SET Status='inactive'";
+    $query = "UPDATE `supplier` SET Status='inactive' WHERE Supplier_ID = '$supplier_id'";
     mysqli_query($db, $query);
     header('location:supplier.php');
 }

@@ -65,7 +65,7 @@ $search = "";
   <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+      <a class="nav-link px-3" href="../sign-in/index.php">Sign out</a> <!--remember the href for the logout button-->
     </div>
   </div>
 </header>
@@ -169,10 +169,10 @@ $search = "";
       </div>
 
       <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-
+      <form method="POST" action="supplier.php">
       <div class="row g-3 align-items-center pt-2 pb-4 border-bottom ">
         <h6>Search Supplier</h6>
-        <form method="POST">
+       
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Supplier Company</label>
         </div>
@@ -182,10 +182,8 @@ $search = "";
         <div class="col align-self-center ">
           <button type="submit" class="btn btn-sm btn-outline-secondary" name="btn_search"><span data-feather="search"></span> Search</button>
         </div>
-        </form>
-        
-
-      </div>
+       </div>
+      </form>
 
       <!-- Supplier List Section -->
       <h3 class="pt-3">Suppliers List</h3>
@@ -193,7 +191,7 @@ $search = "";
         <table class="table table-striped table-sm text-center">
           <thead>
             <tr>
-              <th scope="col">Supplier ID</th>
+             
               <th scope="col">Supplier Company</th>
               <th scope="col">Supplier Details</th>
               <th scope="col">Supplier Address</th>
@@ -206,10 +204,10 @@ $search = "";
           </thead>
           <tbody>
             <?php
-              $result = mysqli_query($db,"select * from supplier");
+              $result = mysqli_query($db,"select * from supplier where Status = 'active'");
             while($row = mysqli_fetch_array($result)){ ?>
             <tr>
-              <td><?php echo $row['Supplier_ID']?></td>
+              <td hidden><?php echo $row['Supplier_ID']?></td>
               <td><?php echo $row['supplier_company']?></td>
               <td><?php echo $row['supplier_detail']?></td>
               <td><?php echo $row['supplier_address']?></td>
@@ -258,7 +256,7 @@ $search = "";
             <div class="row">
               <div class="col">
                 <label for="">Supplier Fax</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="supplier_fax">
+                <input class="form-control form-control-sm mb-2" type="number" name="supplier_fax">
               </div>
             </div>
             <div class="row">
@@ -276,7 +274,7 @@ $search = "";
             <div class="row">
             <div class="col">
                 <label for="">Contact Number</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="contact_number">
+                <input class="form-control form-control-sm mb-2" type="number" name="contact_number">
               </div>
               </div>
               </div>
@@ -291,7 +289,7 @@ $search = "";
 </div>
 
 <!-- modal for Edit Supplier -->
-<!--the id of the choosen data form the table located at id--->
+<!-- the code are in the script below to get data from the table and insert in the edit modal--->
 <div class="modal" id="EditingSupplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

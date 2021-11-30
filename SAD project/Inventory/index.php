@@ -144,6 +144,8 @@
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModalLong">
               <span data-feather="plus"></span>Add</button>
+              <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#AddNewGategoryModal">
+              <span data-feather="plus"></span> Add New Product Gategory</button>
           </div>
         </div>
       </div>
@@ -203,19 +205,23 @@
               <th scope="col">Category</th>
               <th scope="col">Quantity</th>
               <th scope="col">Price</th>
+              <th scope="col">Supplier Company</th>
               <th scope="col">Availability</th>
             </tr>
           </thead>
           <tbody>
-          <?php $result = mysqli_query($db,"select * from products");
-            while($row = mysqli_fetch_array($result)){ ?>
+          <?php $result_view = mysqli_query($db,"select * from products,product_category,supplier 
+          where NOT Product_Status = 'pull-out' AND products.Supplier = supplier.Supplier_ID AND products.ProdCategory = product_category.ProdCategory_ID");
+            while($row_view = mysqli_fetch_array($result_view)){ ?>
             <tr>
-              <td><?php echo $row['Product_no']?></td>
-              <td><?php echo $row['Product_Name']?></td>
-              <td><?php echo $row['ProdCategory']?></td>
-              <td><?php echo $row['Product_Quantity']?></td>
-              <td><?php echo $row['Product_Price']?></td>
-              <td><?php echo $row['Product_Status']?></td>
+              <td><?php echo $row_view['Product_no']?></td>
+              <td><?php echo $row_view['Product_Name']?></td>
+              <td><?php echo $row_view['Product_Type']?></td>
+              <td><?php echo $row_view['Product_Quantity']?></td>
+              <td> ₱ <?php echo $row_view['Product_Price']?></td>
+              <td hidden><?php echo $row_view['Product_Description']?></td>
+              <td><?php echo $row_view['supplier_company']?></td>
+              <td><?php echo $row_view['Product_Status']?></td>
               <td><button type="submit" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
             </tr>
             <?php }?>
@@ -237,41 +243,47 @@
               <div class="row">
               <div class="col-4">
                 <label for="">Product Name</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_name">
+                <input class="form-control form-control-sm mb-2" type="text" name="product_name" required>
               </div>
               <div class="col-3">
               <label for="">Product Category</label>
-              <select class="form-control form-control-sm mb-2" id="exampleFormControlSelect1" placeholder="None" name="product_category">
+              <select class="form-control form-control-sm mb-2" id="exampleFormControlSelect1" placeholder="None" name="product_category" required>
                 <option selected></option>
-                <option value="Motorcycle Parts">Motorcycle Parts</option>
-                <option value="Auto Parts">Auto Parts</option>
-                <option value="Furniture Supplies">Furniture Supplies</option>
-                <option value="Lightings">Lightings</option>
-                <option value="Plastic wares">Plastic wares</option>
-                <option value="Electronic Supplies">Electronic Supplies</option>
-                <option value="Hardware Supplies">Hardware Supplies</option>
+                <?php $query1 = "SELECT * FROM product_category";
+                  $result1 = mysqli_query($db,$query1);
+                  while($suprow = mysqli_fetch_array($result1)){
+                    echo '<option value="'.$suprow['category_code'].'" required>'.$suprow['Product_Type'].'</option>';
+                } ?>
               </select>
               </div>
 
-              <div class="col-1">
+              <div class="col-2">
                 <label for="">Qty</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="product_quantity" >
+                <input class="form-control form-control-sm mb-2 col-4" type="number" name="product_quantity" required>
               </div>
 
               <div class="col-2">
                 <label for="">Price</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_price">
+                <input class="form-control form-control-sm mb-2" type="number" name="product_price" required>
               </div>
             </div>
 
             <div class="row mt-3">
               <div class="col">
                 <label for="">Description</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_description">
+                <textarea class="form-control form-control-sm mb-2" type="text" name="product_description" rows="4" cols="50" required></textarea>
+              
               </div>
               <div class="col">
                 <label for="">Supplier Company</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="supplier_company">
+                <select class="form-control form-control-sm mb-2" id="exampleFormControlSelect1" placeholder="None" name="supplier_company" required>
+                <option selected></option>
+                <?php $query1 = "SELECT * FROM supplier";
+                  $result1 = mysqli_query($db,$query1);
+                  while($suprow = mysqli_fetch_array($result1)){
+                    echo '<option value="'.$suprow['supplier_company'].'" required>'.$suprow['supplier_company'].'</option>';
+                } ?>
+              </select>
               </div>
               </div>
           </div>
@@ -296,43 +308,37 @@
               <div class="modal-body">
               <div class="row">
               <div class="col-4">
+              <input hidden class="form-control form-control-sm mb-2" type="text" name="product_number" id="product_number">
                 <label for="">Product Name</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_name">
+                <input class="form-control form-control-sm mb-2" type="text" name="product_name" id="product_name">
               </div>
               <div class="col-3">
               <label for="">Product Category</label>
-              <select class="form-control form-control-sm mb-2" id="exampleFormControlSelect1" placeholder="None" name="product_category">
-                <option selected></option>
-                <option value="Motorcycle Parts">Motorcycle Parts</option>
-                <option value="Auto Parts">Auto Parts</option>
-                <option value="Furniture Supplies">Furniture Supplies</option>
-                <option value="Lightings">Lightings</option>
-                <option value="Plastic wares">Plastic wares</option>
-                <option value="Electronic Supplies">Electronic Supplies</option>
-                <option value="Hardware Supplies">Hardware Supplies</option>
+              <input disabled class="form-control form-control-sm mb-2" type="text" name="product_category" id="product_category">
               </select>
               </div>
 
-              <div class="col-1">
+              <div class="col-2">
                 <label for="">Qty</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="product_quantity" >
+                <input class="form-control form-control-sm mb-2 col-4" type="number" name="product_quantity" id="product_quantity">
               </div>
 
               <div class="col-2">
                 <label for="">Price</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_price">
+                <input class="form-control form-control-sm mb-2" type="number" name="product_price" id="product_price">
               </div>
             </div>
 
             <div class="row mt-3">
               <div class="col">
                 <label for="">Description</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="product_description">
+                <textarea class="form-control form-control-sm mb-2" type="text" name="product_description" id="product_description" rows="4" cols="50" required></textarea>
               </div>
               <div class="col">
                 <label for="">Supplier Company</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="supplier_company">
+                <input disabled class="form-control form-control-sm mb-2" type="text" name="supplier_company" id="supplier_company">
               </div>
+              <input hidden class="form-control form-control-sm mb-2" type="number" name="product_status" id="product_status">
               </div>
           </div>
       <div class="modal-footer">
@@ -343,7 +349,7 @@
       </form>
     </div>
   </div>
-</div>
+  </div>
 
   </div>
 </div>
@@ -352,6 +358,25 @@
       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
       <script src="dashboard.js"></script>
 
-      
+      <script>
+        $(document).ready(function(){
+            $('.btn_edit').on('click',function(){
+              
+              $tr = $(this).closest('tr');
+              var data = $tr.children("td").map(function(){
+                  return $(this).text();
+              }).get();
+
+              console.log(data);
+              $('#product_number').val(data[0]);
+              $('#product_name').val(data[1]);
+              $('#product_category').val(data[2]);
+              $('#product_price').val(data[4]);
+              $('#product_description').val(data[5]);
+              $('#supplier_company').val(data[6]);
+              $('#product_status').val(data[7]);
+            });
+        });
+      </script>
   </body>
 </html>
