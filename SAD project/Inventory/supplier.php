@@ -193,15 +193,14 @@ $search = "";
         <table class="table table-striped table-sm text-center">
           <thead>
             <tr>
-              <th scope="col">Company Name</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Middle Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Address</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Fax</th>
+              <th scope="col">Supplier ID</th>
+              <th scope="col">Supplier Company</th>
+              <th scope="col">Supplier Details</th>
+              <th scope="col">Supplier Address</th>
+              <th scope="col">Supplier Fax</th>
+              <th scope="col">Contact Person</th>
               <th scope="col">Email</th>
-              <th scope="col">Other Details</th>
+              <th scope="col">Contact Number</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -210,19 +209,18 @@ $search = "";
               $result = mysqli_query($db,"select * from supplier");
             while($row = mysqli_fetch_array($result)){ ?>
             <tr>
-              <td><?php echo $row['Company_Name']?></td>
-              <td><?php echo $row['Firstname']?></td>
-              <td><?php echo $row['Lastname']?></td>
-              <td><?php echo $row['Middle_name']?></td>
-              <td><?php echo $row['Address']?></td>
-              <td><?php echo $row['Phone']?></td>
-              <td><?php echo $row['Fax']?></td>
-              <td><?php echo $row['Email']?></td>
-              <td><?php echo $row['Other_Details']?></td>
+              <td><?php echo $row['Supplier_ID']?></td>
+              <td><?php echo $row['supplier_company']?></td>
+              <td><?php echo $row['supplier_detail']?></td>
+              <td><?php echo $row['supplier_address']?></td>
+              <td><?php echo $row['supplier_fax']?></td>
+              <td><?php echo $row['contact_person']?></td>
+              <td><?php echo $row['contact_email']?></td>
+              <td><?php echo $row['contact_number']?></td>
               <!--Status means when the supplier is still supplying the company or not-->
               <td><?php echo $row['Status']?></td>
               <!--the id choosen from the data table is located at data-target-->
-              <td><button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#EditingSupplierModal<?php echo $row['Supplier_ID']?>">Edit</button></td>
+              <td><button type="button" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingSupplierModal">Edit</button></td>
             </tr>
             <?php }
              ?>
@@ -241,47 +239,47 @@ $search = "";
       <form class="form" method="post" action="supplier.php">
               <div class="modal-body">
               <div class="row">
-              <div class="col-3">
-                <label for="">Company Name</label>
-               <input class="form-control form-control-sm mb-2" type="text" name="company_name">
-              </div>
-              <div class="col-3">
-              <label for="">First name</label>
-              <input class="form-control form-control-sm mb-2" type="text" name="first_name">
-               </div>
-               <div class="col-3">
-                <label for="">Middle Name</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="middle_name" >
-              </div>
-              <div class="col-3">
-                <label for="">Last Name</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="last_name" >
-              </div>
-              </div>
-            <div class="row mt-3">
-            <div class="col-3">
-                <label for="">Contact Number</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="contact_number">
-              </div>
               <div class="col">
-                <label for="">Address</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="address">
+                <label for="">Supplier Company</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_company">
               </div>
+              <div class="row">
               <div class="col">
-                <label for="">Email</label>
-                <input class="form-control form-control-sm mb-2" type="email" name="email">
+                <label for="">Supplier Details</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_details">
               </div>
+              </div>
+            <div class="row">
+            <div class="col">
+                <label for="">Supplier Address</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_address">
+              </div>
+            </div>
+            <div class="row">
               <div class="col">
                 <label for="">Supplier Fax</label>
                 <input class="form-control form-control-sm mb-2" type="text" name="supplier_fax">
               </div>
             </div>
-            <div class="row mt-3">
+            <div class="row">
               <div class="col">
-                <label for="">Other Details</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="other_details">
+              <label for="">Contact Person</label>
+              <input class="form-control form-control-sm mb-2" type="text" name="contact_person">
+               </div>
+            </div>
+            <div class="row">
+               <div class="col">
+                <label for="">Email</label>
+                <input class="form-control form-control-sm mb-2" type="email" name="contact_email">
               </div>
             </div>
+            <div class="row">
+            <div class="col">
+                <label for="">Contact Number</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="contact_number">
+              </div>
+              </div>
+              </div>
           </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
@@ -294,77 +292,94 @@ $search = "";
 
 <!-- modal for Edit Supplier -->
 <!--the id of the choosen data form the table located at id--->
-<div class="modal" id="EditingSupplierModal<?php echo $row['Supplier_ID'];?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal" id="EditingSupplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLongTitle">Edit Supplier</h6>
       </div>
       <form class="form" method="post" action="supplier.php">
-        <div class="modal-body">
               <div class="modal-body">
               <div class="row">
-              <div class="col-3">
-              <input type="hidden" name="id" value="<?php echo $row['Supplier_ID'] ?>">
-              <label for="">Company Name</label>
-               <input class="form-control form-control-sm mb-2" type="text" name="company_name" value="<?php echo $row['Company_Name'] ?>">
+              <div class="col-10">
+              <input type="hidden" name="Supplier_ID" id ="Supplier_ID" value="">
+                <label for="">Supplier Company </label>
+               <input class="form-control form-control-sm mb-2" type="text" name="supplier_company" id="supplier_company">
               </div>
-              <div class="col-3">
-              <label for="">First name</label>
-              <input class="form-control form-control-sm mb-2" type="text" name="first_name" value="<?php echo $row['Firstname'] ?>">
-               </div>
-               <div class="col-3">
-                <label for="">Middle Name</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="middle_name" value="<?php echo $row['Middle_name'] ?>">
-              </div>
-              <div class="col-3">
-                <label for="">Last Name</label>
-                <input class="form-control form-control-sm mb-2 col-4" type="text" name="last_name" value="<?php echo $row['Lastname'] ?>">
-              </div>
-              </div>
-            <div class="row mt-3">
-            <div class="col-3">
-                <label for="">Contact Number</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="contact_number" value="<?php echo $row['Phone'] ?>">
-              </div>
+              <div class="row">
               <div class="col">
-                <label for="">Address</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="address" value="<?php echo $row['Address'] ?>">
+                <label for="">Supplier Details</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_details" id="supplier_details">
               </div>
-              <div class="col">
-                <label for="">Email</label>
-                <input class="form-control form-control-sm mb-2" type="email" name="email" value="<?php echo $row['Email'] ?>">
               </div>
+              <div class="row">
+            <div class="col">
+                <label for="">Supplier Address</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_address" id="supplier_address">
+              </div>
+              </div>
+              <div class="row">
               <div class="col">
                 <label for="">Supplier Fax</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="supplier_fax" value="<?php echo $row['Fax'] ?>">
+                <input class="form-control form-control-sm mb-2" type="text" name="supplier_fax" id="supplier_fax">
               </div>
-            </div>
-            <div class="row mt-3">
+              </div>
+              <div class="row">
               <div class="col">
-                <label for="">Other Details</label>
-                <input class="form-control form-control-sm mb-2" type="text" name="other_details" value="<?php echo $row['Other_Details'] ?>">
+              <label for="">Contact Person</label>
+              <input class="form-control form-control-sm mb-2" type="text" name="contact_person" id="contact_person">
+               </div>
               </div>
-            </div>
+              <div class="row">
+               <div class="col">
+                <label for="">Email</label>
+                <input class="form-control form-control-sm mb-2" type="email" name="contact_email" id="contact_email">
+              </div>
+              </div>
+              <div class="row">
+               <div class="col">
+                <label for="">Contact Number</label>
+                <input class="form-control form-control-sm mb-2" type="text" name="contact_number" id="contact_number">
+                <input type="hidden" name="status" id ="status" value="">
+              </div>
           </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success btn-sm" name="btn_update" >Update Supplier</button>
+        <button type="submit" class="btn btn-success btn-sm" name="btn_editsupply" >Update Supplier</button>
         <button type="submit" class="btn btn-sm btn-outline-danger" name="btn_remove" >Remove Supplier</button>
       </div>
       </form>
     </div>
   </div>
 </div>
-
-
-
-  </div>
+ </div>
 </div>
 
-
-
-
       <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
-  </body>
+  
+      <!--New added 29/11/2021 for fetch data from the table to edit modal--->
+      <script>
+        $(document).ready(function(){
+            $('.btn_edit').on('click',function(){
+              
+              $tr = $(this).closest('tr');
+              var data = $tr.children("td").map(function(){
+                  return $(this).text();
+              }).get();
+
+              console.log(data);
+
+              $('#Supplier_ID').val(data[0]);
+              $('#supplier_company').val(data[1]);
+              $('#supplier_details').val(data[2]);
+              $('#supplier_address').val(data[3]);
+              $('#supplier_fax').val(data[4]);
+              $('#contact_person').val(data[5]);
+              $('#contact_email').val(data[6]);
+              $('#contact_number').val(data[7]);
+              $('#status').val(data[8]);
+            });
+        });
+      </script>
+    </body>
 </html>

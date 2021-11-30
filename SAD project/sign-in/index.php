@@ -24,8 +24,6 @@
       <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
       <label for="floatingPassword">Password</label>
     </div>
-
-
     <button id="signinbutton" class=" w-100 btn btn-lg btn-outline-dark mb-3 mt-2" type="submit" name="sign_in">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2000–2021</p>
   </form>

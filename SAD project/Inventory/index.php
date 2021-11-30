@@ -1,11 +1,4 @@
-<?php include('inventoryconnect.php');
-
-$name = "";
-$product_no = "";
-$product_category = "";
-$supplier_name = "";
-
-?>
+<?php include('inventoryconnect.php');?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -51,7 +44,7 @@ $supplier_name = "";
   <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <div class="navbar-nav">
     <div class="nav-item text-nowrap">
-      <a class="nav-link px-3" href="#">Sign out</a>
+      <a class="nav-link px-3" href="../sign-in/index.php">Sign out</a> <!--remember the href for the logout button (updated 29/11/2021)-->
     </div>
   </div>
 </header>
@@ -142,7 +135,7 @@ $supplier_name = "";
         </ul> -->
       </div>
     </nav>
-      
+
     <!-- Adding and removing buttons -->
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -151,8 +144,6 @@ $supplier_name = "";
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModalLong">
               <span data-feather="plus"></span>Add</button>
-            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#RemovingProductModal">
-              <span data-feather="minus"></span> Remove</button>
           </div>
         </div>
       </div>
@@ -162,31 +153,30 @@ $supplier_name = "";
       <div class="row g-3 align-items-center pt-2 pb-4 border-bottom ">
         <h6>Search Product</h6>
         <div class="col-auto">
-          <form method="POST">
           <label for="inputPassword6" class="col-form-label ">Product #</label>
         </div>
         <div class="col-1">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="product_no">
+          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
         </div>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Name</label>
         </div>
         <div class="col-2">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="name">
+          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
         </div>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Category</label>
         </div>
         <div class="col-2">
-            <select class="form-control" id="exampleFormControlSelect1" name="product_category">
+            <select class="form-control" id="exampleFormControlSelect1">
               <option selected></option>
-              <option value="Motorcycle Parts">Motorcycle Parts</option>
-                <option value="Auto Parts">Auto Parts</option>
-                <option value="Furniture Supplies">Furniture Supplies</option>
-                <option value="Lightings">Lightings</option>
-                <option value="Plastic wares">Plastic wares</option>
-                <option value="Electronic Supplies">Electronic Supplies</option>
-                <option value="Hardware Supplies">Hardware Supplies</option>
+              <option>Motorcycle Parts</option>
+              <option>Auto Parts</option>
+              <option>Furniture Supplies</option>
+              <option>Lightings</option>
+              <option>Plastic wares</option>
+              <option>Electronic Supplies</option>
+              <option>Hardware Supplies</option>
 
             </select>
         </div>
@@ -194,12 +184,12 @@ $supplier_name = "";
           <label for="inputPassword6" class="col-form-label ">Supplier Company</label>
         </div>
         <div class="col-2">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="supplier_name">
+          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
         </div>
         <div class="col align-self-center ">
-          <button type="submit" class="btn btn-sm btn-outline-secondary" name="btn_search"><span data-feather="search"></span> Search</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary"><span data-feather="search"></span> Search</button>
         </div>
-        </form>
+
       </div>
 
       <!-- Product List Section -->
@@ -213,43 +203,20 @@ $supplier_name = "";
               <th scope="col">Category</th>
               <th scope="col">Quantity</th>
               <th scope="col">Price</th>
-              <th scope="col">Supplier</th>
               <th scope="col">Availability</th>
             </tr>
           </thead>
           <tbody>
-          <?php
-         /* if (isset($_POST['btn_search'])) {
-            $name = $_POST['name'];
-            $product_no = $_POST['product_no'];
-            $supplier_name = $_POST['supplier_name'];
-
-            $result1 = mysqli_query($db,"select * from products where (Product_Name LIKE '%$name%') OR(Product_no LIKE '%$product_no%') OR(Supplier	LIKE '%$supplier_name%') ");
-            while($row1 = mysqli_fetch_array($result1)){ ?>
-            <tr>
-              <td><?php echo $row1['Product_no']?></td>
-              <td><?php echo $row1['Product_Name']?></td>
-              <td><?php echo $row1['ProdCategory']?></td>
-              <td><?php echo $row1['Product_Quantity']?></td>
-              <td>PHP <?php echo $row1['Product_Price']?></td>
-              <td><?php echo $row1['Supplier']?></td>
-              <td><?php echo $row1['Product_Status']?></td>
-              <td><button type="submit" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
-            </tr>
-            <?php }
-          exit();
-          } */
-          $result = mysqli_query($db,"select * from products");
+          <?php $result = mysqli_query($db,"select * from products");
             while($row = mysqli_fetch_array($result)){ ?>
             <tr>
               <td><?php echo $row['Product_no']?></td>
               <td><?php echo $row['Product_Name']?></td>
               <td><?php echo $row['ProdCategory']?></td>
               <td><?php echo $row['Product_Quantity']?></td>
-              <td>PHP <?php echo $row['Product_Price']?></td>
-              <td><?php echo $row['Supplier']?></td>
+              <td><?php echo $row['Product_Price']?></td>
               <td><?php echo $row['Product_Status']?></td>
-              <td><button type="submit" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
+              <td><button type="submit" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
             </tr>
             <?php }?>
           </tbody>
@@ -270,7 +237,6 @@ $supplier_name = "";
               <div class="row">
               <div class="col-4">
                 <label for="">Product Name</label>
-            
                 <input class="form-control form-control-sm mb-2" type="text" name="product_name">
               </div>
               <div class="col-3">
@@ -323,7 +289,7 @@ $supplier_name = "";
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="exampleModalLongTitle">Add Product</h6>
+        <h6 class="modal-title" id="exampleModalLongTitle">Edit Product</h6>
       </div>
       <div class="modal-body">
       <form class="form" method="post" action="index.php">
@@ -331,7 +297,6 @@ $supplier_name = "";
               <div class="row">
               <div class="col-4">
                 <label for="">Product Name</label>
-            
                 <input class="form-control form-control-sm mb-2" type="text" name="product_name">
               </div>
               <div class="col-3">
@@ -372,7 +337,7 @@ $supplier_name = "";
           </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success btn-sm" name="btn_edit" >Add Product</button>
+        <button type="submit" class="btn btn-success btn-sm" name="btn_edit" >Update Product</button>
         <button type="submit" class="btn btn-sm btn-outline-danger" name="btn_remove" >Remove Product</button>
       </div>
       </form>
@@ -380,14 +345,13 @@ $supplier_name = "";
   </div>
 </div>
 
-
-
   </div>
 </div>
 
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+      <script src="dashboard.js"></script>
 
-
-
-      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
+      
   </body>
 </html>
