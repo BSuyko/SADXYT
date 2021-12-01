@@ -1,4 +1,6 @@
-<?php include('inventoryconnect.php');?>
+<?php include('inventoryconnect.php');
+$supplier_id = "";
+$product_category1 = "";?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -151,48 +153,52 @@
       </div>
 
       <!-- <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas> -->
-
+      <form method="POST" action="index.php">
       <div class="row g-3 align-items-center pt-2 pb-4 border-bottom ">
         <h6>Search Product</h6>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Product #</label>
         </div>
         <div class="col-1">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="product_no">
         </div>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Name</label>
         </div>
         <div class="col-2">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="product_name">
         </div>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Category</label>
         </div>
         <div class="col-2">
-            <select class="form-control" id="exampleFormControlSelect1">
+            <select class="form-control" id="exampleFormControlSelect1" placeholder="None" name="product_category">
               <option selected></option>
-              <option>Motorcycle Parts</option>
-              <option>Auto Parts</option>
-              <option>Furniture Supplies</option>
-              <option>Lightings</option>
-              <option>Plastic wares</option>
-              <option>Electronic Supplies</option>
-              <option>Hardware Supplies</option>
-
-            </select>
+              <?php $query1 = "SELECT * FROM product_category";
+                  $result1 = mysqli_query($db,$query1);
+                  while($suprow = mysqli_fetch_array($result1)){
+                    echo '<option value="'.$suprow['category_code'].'" required>'.$suprow['Product_Type'].'</option>';
+                } ?>
+                </select>
         </div>
         <div class="col-auto">
           <label for="inputPassword6" class="col-form-label ">Supplier Company</label>
         </div>
         <div class="col-2">
-          <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline">
+        <select class="form-control form-control-sm mb-2" id="exampleFormControlSelect1" placeholder="None" name="supplier_company">
+                <option selected></option>
+                <?php $query1 = "SELECT * FROM supplier";
+                  $result1 = mysqli_query($db,$query1);
+                  while($suprow = mysqli_fetch_array($result1)){
+                    echo '<option value="'.$suprow['supplier_company'].'" required>'.$suprow['supplier_company'].'</option>';
+                } ?>
+              </select>
         </div>
         <div class="col align-self-center ">
-          <button type="button" class="btn btn-sm btn-outline-secondary"><span data-feather="search"></span> Search</button>
+          <button type="submit" class="btn btn-sm btn-outline-secondary" name="btn_search"><span data-feather="search"></span> Search</button>
         </div>
-
       </div>
+      </form>
 
       <!-- Product List Section -->
       <h3 class="pt-3">Product List</h3>
@@ -210,7 +216,43 @@
             </tr>
           </thead>
           <tbody>
-          <?php $result_view = mysqli_query($db,"select * from products,product_category,supplier 
+          <?php
+          //------------------------------------------------- search button 
+          
+          if (isset($_POST['btn_search'])) {
+            $product_code = $_POST['product_category'];
+             
+              //product category
+              $result_category1 = mysqli_query($db,"SELECT * from product_category WHERE category_code = '$product_code'");
+              while($prod_category_row1 = mysqli_fetch_array($result_category1)){
+                $product_category1 = $prod_category_row1['ProdCategory_ID'];
+              }
+              $supplier_company = $_POST['supplier_company'];
+              // supplier
+              $result_supplier = mysqli_query($db,"SELECT * from supplier WHERE supplier_company = '$supplier_company'");
+              while($supplier_row = mysqli_fetch_array($result_supplier)){
+                $supplier_id = $supplier_row['Supplier_ID'];
+              }
+              $result_view1 = mysqli_query($db,"select * from products,product_category,supplier 
+              where NOT Product_Status = 'pull-out' AND (ProdCategory ='$product_category1' OR Product_no ='$product_no' OR Product_Name ='$product_name' OR Supplier = '$supplier_id') AND products.Supplier = supplier.Supplier_ID 
+              AND products.ProdCategory = product_category.ProdCategory_ID");
+              
+            while($row_view1 = mysqli_fetch_array($result_view1)){ ?>
+              <tr>
+                <td><?php echo $row_view1['Product_no']?></td>
+                <td><?php echo $row_view1['Product_Name']?></td>
+                <td><?php echo $row_view1['Product_Type']?></td>
+                <td><?php echo $row_view1['Product_Quantity']?></td>
+                <td> ₱ <?php echo $row_view1['Product_Price']?></td>
+                <td hidden><?php echo $row_view1['Product_Description']?></td>
+                <td><?php echo $row_view1['supplier_company']?></td>
+                <td><?php echo $row_view1['Product_Status']?></td>
+                <td><button type="submit" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
+              </tr>
+              <?php }
+            exit();
+          } 
+            $result_view = mysqli_query($db,"select * from products,product_category,supplier 
           where NOT Product_Status = 'pull-out' AND products.Supplier = supplier.Supplier_ID AND products.ProdCategory = product_category.ProdCategory_ID");
             while($row_view = mysqli_fetch_array($result_view)){ ?>
             <tr>
@@ -224,7 +266,9 @@
               <td><?php echo $row_view['Product_Status']?></td>
               <td><button type="submit" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingProductModal" name="btn_edit">Edit</button></td>
             </tr>
-            <?php }?>
+            <?php
+          
+           }?>
           </tbody>
         </table>
       </div>

@@ -1,23 +1,5 @@
 <?php include('supplierconnection.php');
 
-//when the edit button triggered
-/*if (isset($_GET['btn_edit'])) {
-  $userid = $_GET['Supplier_ID '];
-  $sql = mysqli_query($db,"select * from employees where User_ID = $userid");
-	$rec = mysqli_fetch_array($sql);
-  
- $company_name    =    $rec['Company_Name'];
- $first_name      =    $rec['Firstname'];
- $last_name       =    $rec['Lastname'];
- $address         =    $rec['Address'];
- $contact_number  =    $rec['Phone'];
- $supplier_fax    =    $rec['Fax'];
- $email           =    $rec['Email'];
- $other_details   =    $rec['Other_Details'];
- $status          =    $rec['Status'];
- 
-}*/
-
 $search = "";
 ?>
 <!doctype html>
@@ -204,6 +186,28 @@ $search = "";
           </thead>
           <tbody>
             <?php
+            if (isset($_POST['btn_search'])) {
+              $search = $_POST['supplier'];
+              $search_result = mysqli_query($db,"select * from supplier where supplier_company LIKE '%$search%' AND Status = 'active'");
+            
+              while($row = mysqli_fetch_array($search_result)){ ?>
+                <tr>
+                  <td hidden><?php echo $row['Supplier_ID']?></td>
+                  <td><?php echo $row['supplier_company']?></td>
+                  <td><?php echo $row['supplier_detail']?></td>
+                  <td><?php echo $row['supplier_address']?></td>
+                  <td><?php echo $row['supplier_fax']?></td>
+                  <td><?php echo $row['contact_person']?></td>
+                  <td><?php echo $row['contact_email']?></td>
+                  <td><?php echo $row['contact_number']?></td>
+                  <!--Status means when the supplier is still supplying the company or not-->
+                  <td><?php echo $row['Status']?></td>
+                  <!--the id choosen from the data table is located at data-target-->
+                  <td><button type="button" class="btn btn-sm btn-outline-secondary btn_edit" data-toggle="modal" data-target="#EditingSupplierModal">Edit</button></td>
+                </tr>
+                <?php }
+              exit(); 
+            }
               $result = mysqli_query($db,"select * from supplier where Status = 'active'");
             while($row = mysqli_fetch_array($result)){ ?>
             <tr>
